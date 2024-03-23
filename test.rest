@@ -1,0 +1,49 @@
+POST http://127.0.0.1:8000/signup 
+Content-Type: application/json
+
+{ "username": "adam2", "password": "Pass1234!", "email": "adam2@mail.com" }
+
+###
+
+POST http://127.0.0.1:8000/login 
+Content-Type: application/json
+
+{ "email": "adam2@mail.com", "password": "Pass1234!" }
+
+###
+
+GET http://127.0.0.1:8000/test_token 
+Content-Type: application/json
+Authorization: token c362581117e209735d412226e54596867e370892
+# Authorization: token 53e2b003a92e22aca85c95088a438ece8d9a5dfb
+
+
+###
+
+GET http://127.0.0.1:8000/getInfo 
+Content-Type: application/json
+Authorization: token c362581117e209735d412226e54596867e370892
+# Authorization: token 53e2b003a92e22aca85c95088a438ece8d9a5dfb
+
+
+###
+GET http://127.0.0.1:8000/templatequestions 
+Content-Type: application/json
+Authorization: token c362581117e209735d412226e54596867e370892
+ 
+
+###
+GET http://127.0.0.1:8000/templatepages 
+Content-Type: application/json
+Authorization: token c362581117e209735d412226e54596867e370892
+ 
+ 
+###
+
+ POST http://127.0.0.1:8000/savetemplateform 
+Content-Type: application/json
+Authorization: token c362581117e209735d412226e54596867e370892
+
+{ "question_id": "1", "answer_text": "answer1" }
+
+###
