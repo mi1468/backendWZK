@@ -1,3 +1,4 @@
+from lib2to3.pgen2.token import EQUAL
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -45,14 +46,18 @@ def get_template_questions(request):
 
     # Get the maximum page among active questions
     max_page = Questions.objects.filter(active=True).aggregate(max_page=Max('page'))['max_page']
-    
+    # curent_page = AnswerTemplateQuestions.objects.filter(user=request.user).aggregate(max_page=Max('page'))['max_page']
+    current_page = Questions.objects.filter(type="text", answertemplatequestions__user=user, answertemplatequestions__answer_text__isnull=False, ).aggregate(Max('page'))
+    if current_page["page__max"] is  None:
+        current_page["page__max"] = 1
+
     # Get all template questions with user's answers
     template_questions = Questions.objects.filter(active=True).order_by('order')
 
     # Pass the request object to the serializer context
     serializer = QuestionsSerializer(template_questions, many=True, context={'request': request})
 
-    return Response({'max_page': max_page, 'questions': serializer.data })
+    return Response({'max_page': max_page, 'current_page':current_page["page__max"] , 'questions': serializer.data })
 
 
 
