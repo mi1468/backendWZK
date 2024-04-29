@@ -1,3 +1,4 @@
+import json
 from lib2to3.pgen2.token import EQUAL
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
@@ -11,36 +12,14 @@ from django.db.models import Max
 from django.db.models import Max, Case, When, Exists, OuterRef
 from django.db.models import Max, OuterRef, Subquery
 from rest_framework.request import Request
-
+from django.http import JsonResponse
+# from ..static.samples import templateFrom
 
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
-# def get_template_questions(request):
-#     user = request.user
-
-#     # Get the maximum page among active questions
-#     max_page = Questions.objects.filter(active=True).aggregate(max_page=Max('page'))['max_page']
-    
-#     # Get all template questions
-#     template_questions = Questions.objects.filter(active=True).order_by('order')
-
-#     # Serialize the template questions
-#     serializer = QuestionsSerializer(template_questions, many=True)
-
-#     # Get user's answers for the template questions
-#     user_answers = {}
-#     for question in template_questions:
-#         try:
-#             answer = AnswerTemplateQuestions.objects.get(user=user, question=question)
-#             user_answers[question.id] = answer.answer_text
-#         except AnswerTemplateQuestions.DoesNotExist:
-#             pass
-
-#     # Return the template questions along with user's answers
-#     return Response({'max_page': max_page, 'questions': serializer.data, 'user_answers': user_answers})
-
+ 
 def get_template_questions(request):
     user = request.user
 
@@ -58,6 +37,29 @@ def get_template_questions(request):
     serializer = QuestionsSerializer(template_questions, many=True, context={'request': request})
 
     return Response({'max_page': max_page, 'current_page':current_page["page__max"] , 'questions': serializer.data })
+
+
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+ 
+def get_template_questions_cgm(request):
+    user = request.user
+
+    # Get the maximum page among active questions
+    # try:
+
+    with open('core/static/samples/templateForm.json', 'r') as json_file:
+        template_data = json.load(json_file)
+    # with open('template_form.json', 'r') as json_file:
+    #     template_data = templateFrom.load(json_file)
+    return JsonResponse(template_data)
+    # except FileNotFoundError:
+    #     return JsonResponse({'error': 'Template form JSON file not found'}, status=404)
+    # except Exception as e:
+        # return JsonResponse({'error': str(e)}, status=500)
+    # return Response({'max_page': max_page, 'current_page':current_page["page__max"] , 'questions': serializer.data })
 
 
 

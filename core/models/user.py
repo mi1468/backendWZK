@@ -5,6 +5,8 @@ class User(AbstractUser):
     birthday = models.DateField(blank=True, null=True)
     patient_id = models.CharField(max_length=100, blank=True, null=True)
 
+ 
+
     pass
 
     # permissions = [('can_view_content', 'Can view content'), ('can_edit_content', 'Can edit content')]

@@ -66,7 +66,8 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'core/templates')],  # Add this line
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -98,8 +99,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'core1',
         'USER': 'root',
-        # 'PASSWORD': '',
-        'PASSWORD': os.getenv('DB_PASSWORD', 'default_database_password'),
+        'PASSWORD': '',
+        # 'PASSWORD': os.getenv('DB_PASSWORD', 'default_database_password'),
 
         'HOST': 'localhost',   # Or the IP address where MySQL is hosted
         'PORT': '3306',        # Default MySQL port
@@ -147,3 +148,27 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.ionos.de'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'mail@clinet.club'
+EMAIL_HOST_PASSWORD = 'uzudzsd78786d7asd56gasdbsad'
+DEFAULT_FROM_EMAIL = 'mail@clinet.club'
+
+
+# EMAIL_BACKEND = 'django_imap_backend.ImapBackend'
+# EMAIL_IMAP_SECRETS = [
+#     {
+#         'HOST': 'imap.ionos.com',
+#         'PORT': 993,  # default 143 and for SSL 993
+#         'USER': 'mail@clinet.club',
+#         'PASSWORD': 'uzudzsd78786d7asd56gasdbsad',
+#         'MAILBOX': 'my_project',  # Created if not exists
+#         'SSL': True  # Default
+#     }
+# ]

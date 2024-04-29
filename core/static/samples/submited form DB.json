@@ -1,0 +1,157 @@
+{
+  "TaskInfo": {
+    "TaskId": "IMP_FALL_FORMULARINSTANZ_NEW",
+    "MirthTimestamp": "",
+    "MirthChannelId": "",
+    "MirthMessageId": "",
+    "MirthMetadata": "",
+    "ExternalSender": "WZAPP",
+    "ExternalVersion": 1,
+    "KonzernBez": "",
+    "KonzernStandort": "",
+    "Mandant": { "MandantId": "01", "Relevant": 1 },
+    "FallNr": "141",
+    "PatientNr": "141",
+    "AdrId": "",
+    "TerminId": "",
+    "DispoId": "",
+    "ProzedurenId": "",
+    "DiagnosenId": "",
+    "OrderNr": "",
+    "HeilmittelId": "",
+    "MeldescheinNummer": "",
+    "ExtFallNummer": ""
+  },
+  "Objects": {
+    "FallFormularinstanz": {
+      "ExtUniqueIdentifier": "",
+      "CaseUniqueIdentifier": "CGM_EXT.01.141",
+      "FormDefUniqueIdentifier": "Konzern.01.M3UC9VUPU0IT",
+      "FormId": "M3UC9VUPU0IT",
+      "FormDesc": "",
+      "TemplateId": "Q3SKP9QLBC84",
+      "ExtCreateDate": "",
+      "PointOfTimeId": 0,
+      "Dezimaltrennzeichen": ",",
+      "NFormInstAnswer": [
+        {
+          "AnswerId": "Q3SKP93IGHON",
+          "AnswerDesc": "Name:",
+          "QuestionId": "Q3SKP9YVNX31",
+          "QuestionDesc": "Wen k\u00f6nnen wir bei einem Notfall kontaktieren?",
+          "ControlType": "Text",
+          "AnswerValue": [],
+          "Value": "my name"
+        },
+        {
+          "AnswerId": "Q3SKP9QZ5R5P",
+          "AnswerDesc": "Adresse:",
+          "QuestionId": "Q3SKP9YVNX31",
+          "QuestionDesc": "Wen k\u00f6nnen wir bei einem Notfall kontaktieren?",
+          "ControlType": "Text",
+          "AnswerValue": [],
+          "Value": "my address"
+        },
+        {
+          "AnswerId": "Q3SKP9549TL5",
+          "AnswerDesc": "Telefon:",
+          "QuestionId": "Q3SKP9YVNX31",
+          "QuestionDesc": "Wen k\u00f6nnen wir bei einem Notfall kontaktieren?",
+          "ControlType": "Text",
+          "AnswerValue": [],
+          "Value": "1228"
+        },
+        {
+          "AnswerId": "Q3SKP9KBHOHF",
+          "AnswerDesc": "Nein",
+          "QuestionId": "Q3SKP9TV5OZG",
+          "QuestionDesc": "Waren Sie schon einmal in einer Rehabilitationsklinik, wenn ja welche Klinik, wann und warum?",
+          "ControlType": "RadioButton",
+          "AnswerValue": "0",
+          "Value": "1"
+        },
+        {
+          "AnswerId": "Q3SKP97RYKHI",
+          "AnswerDesc": [],
+          "QuestionId": "Q3SKP9L0YD94",
+          "QuestionDesc": "Was ist der Grund/Anlass f\u00fcr die jetzige Reha-Ma\u00dfnahme / f\u00fcr Ihren Aufenthalt (Beschwerden, Erkrankungen, OP)?",
+          "ControlType": "Text",
+          "AnswerValue": [],
+          "Value": "fffsdfasdf"
+        },
+        {
+          "AnswerId": "Q3SKP98ZOLR4",
+          "AnswerDesc": "Manuelle Therapie",
+          "QuestionId": "Q3SKP9PGLH9B",
+          "QuestionDesc": "Bisherige therapeutische Ma\u00dfnahmen: Welche Behandlungen wurden im Vorfeld dieser Reha-Behandlung durchgef\u00fchrt?",
+          "ControlType": "Checkbox",
+          "AnswerValue": "0",
+          "Value": true
+        },
+        {
+          "AnswerId": "Q3SKP9G82YSK",
+          "AnswerDesc": "Akupunktur",
+          "QuestionId": "Q3SKP9PGLH9B",
+          "QuestionDesc": "Bisherige therapeutische Ma\u00dfnahmen: Welche Behandlungen wurden im Vorfeld dieser Reha-Behandlung durchgef\u00fchrt?",
+          "ControlType": "Checkbox",
+          "AnswerValue": "0",
+          "Value": true
+        },
+        {
+          "AnswerId": "Q3SKP9UFR6V4",
+          "AnswerDesc": "Thrombose/Lungenembolie",
+          "QuestionId": "Q3SKP9X3WD9A",
+          "QuestionDesc": "Wichtige Vorerkrankungen",
+          "ControlType": "Checkbox",
+          "AnswerValue": "0",
+          "Value": true
+        },
+        {
+          "AnswerId": "Q3SKP9H8UT9Z",
+          "AnswerDesc": "Blutverd\u00fcnner",
+          "QuestionId": "Q3SKP92EZR29",
+          "QuestionDesc": "Wichtige Gesundheitsrisiken",
+          "ControlType": "Checkbox",
+          "AnswerValue": "0",
+          "Value": true
+        },
+        {
+          "AnswerId": "Q3SKP9IE675O",
+          "AnswerDesc": "aktuelles K\u00f6rpergewicht",
+          "QuestionId": "Q3SKP98P2QLQ",
+          "QuestionDesc": "K\u00f6rpergewicht",
+          "ControlType": "Float",
+          "AnswerValue": [],
+          "Value": "123"
+        },
+        {
+          "AnswerId": "Q3SKP9E7K4DZ",
+          "AnswerDesc": "seit",
+          "QuestionId": "Q3SKP9J6QFE2",
+          "QuestionDesc": "Wesentliche Gewichtsver\u00e4nderungen:",
+          "ControlType": "Text",
+          "AnswerValue": [],
+          "Value": "dfsfdsffd"
+        },
+        {
+          "AnswerId": "Q3SKP9V36AYP",
+          "AnswerDesc": "Wie erkl\u00e4ren sie sich Ihre Gewichtsver\u00e4nderung?",
+          "QuestionId": "Q3SKP9J6QFE2",
+          "QuestionDesc": "Wesentliche Gewichtsver\u00e4nderungen:",
+          "ControlType": "Text",
+          "AnswerValue": [],
+          "Value": "ffffffffffffff"
+        },
+        {
+          "AnswerId": "Q3SKP97MEJE6",
+          "AnswerDesc": "bei",
+          "QuestionId": "Q3SKP9VROH87",
+          "QuestionDesc": "Haben Sie weitere Einschr\u00e4nkungen im Alltag und Beruf (z. B. Konzentration , Stress bew\u00e4ltigen, Teilnahme am Vereinsleben)?",
+          "ControlType": "Memo",
+          "AnswerValue": [],
+          "Value": "fffffffffffff"
+        }
+      ]
+    }
+  }
+}

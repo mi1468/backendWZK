@@ -1,0 +1,1 @@
+https://wappbackend.wz-kliniken.de/backend/rest/app/checkin/submit
