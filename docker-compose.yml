@@ -1,0 +1,30 @@
+version: "3.6"
+
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: CLINET999zztt
+      MYSQL_DATABASE: mysql_clinet
+      MYSQL_USER: clinet_dbadmin_pg
+      MYSQL_PASSWORD: CLINET999zztt
+    volumes: 
+      - mysql_data:/var/lib/mysql_test_newplatform/data
+      
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "sleep 20 && python manage.py runserver 0.0.0.0:55"
+    volumes: 
+      - .:/code
+    ports: 
+      - "55:55"
+    depends_on: 
+      - db
+    environment:
+      DJANGO_SETTINGS_MODULE: core.settings
+      MYSQL_UNIX_PORT: /var/run/mysqld/mysqld.sock
+
+volumes:
+  mysql_data:

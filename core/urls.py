@@ -1,37 +1,31 @@
 from django.urls import re_path
 from django.contrib import admin
 from django.urls import path
-
-from . import views
-from .views import patientView
-from .views import TemplateQuestionsView
-from .views import AnswerTemplateQuestionsView
+ 
+from .views import userView 
+from django.urls import include, path
 
 urlpatterns = [
 
     path('admin/', admin.site.urls),
 
 
-    re_path('signup', patientView.signup),
-    re_path('login', patientView.login),
-    re_path('getInfo', patientView.getInfo),
+    # re_path(r'^signup/$', userView.signup, name="signup"),
+ 
+    re_path('signup', userView.signup , name="signup"),
+    re_path('login', userView.login),
+    re_path('getInfo', userView.getInfo),
 
-    re_path('sendSmsVerification', patientView.sendSmsVerification),
-    re_path('sendEmailVerification', patientView.sendEmailVerification),
-    re_path('submitEmailVerification', patientView.submitEmailVerification),
+    re_path('sendSmsVerification', userView.sendSmsVerification),
+    re_path('sendEmailVerification', userView.sendEmailVerification),
+    re_path('submitEmailVerification', userView.submitEmailVerification),
 
-    re_path('test_token_admin', patientView.test_token),
+    re_path('sendForgetPasswordCode', userView.sendForgetPasswordCode),
+    re_path('sendCodeAndNewPassword', userView.sendCodeAndNewPassword),
 
-
-    re_path('templatequestions', TemplateQuestionsView.get_template_questions),
-    re_path('templatepages', TemplateQuestionsView.get_template_pages),
-    re_path('savetemplateform', AnswerTemplateQuestionsView.submit_answer),
-
-    
-    re_path('templatequestionscgm', TemplateQuestionsView.get_template_questions_cgm),
+    path('clinet_patient_form/', include('clinet_patient_form.urls')),
 
 
-
-    # path('templatequestions/', get_template_questions , name='template_questions_api'),
-
+   
+   
 ]

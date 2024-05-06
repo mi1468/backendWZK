@@ -5,7 +5,7 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from core.models.AnswerTemplateQuestions import AnswerTemplateQuestions
+from clinet_patient_form.models.AnswerTemplateQuestions import AnswerTemplateQuestions
 from ..models.Questions import Questions
 from ..serializers.QuestionsSerializer import QuestionsSerializer
 from django.db.models import Max

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models.AnswerTemplateQuestions import AnswerTemplateQuestions
+from clinet_patient_form.models.AnswerTemplateQuestions import AnswerTemplateQuestions
 from ..models.Questions import Questions
 
 class QuestionsSerializer(serializers.ModelSerializer):

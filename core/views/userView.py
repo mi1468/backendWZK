@@ -11,34 +11,56 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
-# from .models.user import User
 from django.contrib.auth.models import User
 
-# from .serializers.user import UserSerializer
-from ..serializers.PatientSerializer import  PatientSerializer
-from ..serializers.UserSerializer import  UserSerializer
+from core.models.Patient import Patient
+from core.serializers.UserSerializer import  UserSerializer
+from core.serializers.PatientSerializer import  PatientSerializer
 
 # utils.py
-from ..models.AssignedRule import AssignedRule
-from ..models.Patient import Patient
+from core.models.AssignedRule import AssignedRule
+from CGM.models.CGMInput import CGMInput
+
 
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
-
-from django.core.mail import send_mail
+from django.utils.dateparse import parse_date
  
-
 
 
 def user_has_role(user, role_name):
     return AssignedRule.objects.filter(user=user, role__name=role_name).exists()
    
 
-
 @api_view(['POST'])
 def signup(request):
+    # Check if username already exists
+    if User.objects.filter(username=request.data['username']).exists():
+        return Response({'username': ['A user with that username already exists.']}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Ensure mobile number is provided
+    if 'mobile_number' not in request.data:
+        return Response({'mobile_number': ['This field is required.']}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Validate date format
+    birthday = request.data.get('birthday')
+    if birthday:
+        try:
+            parsed_birthday = parse_date(birthday)
+            if parsed_birthday is None:
+                return Response({'birthday': ['Invalid date format. It must be in YYYY-MM-DD format.']}, status=status.HTTP_400_BAD_REQUEST)
+        except ValueError:
+            return Response({'birthday': ['Invalid date format. It must be in YYYY-MM-DD format.']}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Check if the provided birthday and fallnumber exist in CGMInput
+    fallnumber = request.data.get('fallnumber')
+
+    if not CGMInput.objects.filter(birthday=birthday, fallnumber=fallnumber).exists():
+        return Response({'detail': 'Invalid birthday or fallnumber.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Proceed with user creation
     user_serializer = UserSerializer(data=request.data)
     if user_serializer.is_valid():
         user = user_serializer.save()
@@ -47,9 +69,8 @@ def signup(request):
         
         patient_data = {
             'user': user.id,
-            'birthday': request.data['birthday'],
-            'mobile_number': request.data['mobile_number'],
-            
+            'birthday': birthday,
+            'mobile_number': request.data['mobile_number'],  # Ensure mobile number is provided
         }
         patient_serializer = PatientSerializer(data=patient_data)
         if patient_serializer.is_valid():
@@ -63,6 +84,54 @@ def signup(request):
     else:
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+def sendForgetPasswordCode(request):
+    try:
+        
+  
+        # Retrieve the associated patient object
+        patient = Patient.objects.get(mobile_number=request.data['mobile_number'])
+        
+       
+        # Generate a random verification code
+        verification_code = str(random.randint(100000, 999999))
+        
+        # Update user's verification_code and sms_time_for_valid
+        patient.verification_email_code = verification_code
+        patient.verification_sms_code = verification_code
+        patient.save()
+        
+        sendEmail(patient.user.email,verification_code)
+         
+        return Response({"message": ("Email verification code sent successfully.   " + patient.user.email)})
+
+    except Patient.DoesNotExist:
+        # If no patient object exists for the user, return an error response
+        return Response({'error': 'No patient data found for this user'}, status=404)
+
+ 
+
+
+
+from django.contrib.auth.hashers import make_password
+
+@api_view(['POST'])
+def sendCodeAndNewPassword(request):
+    try:
+        # Retrieve the associated patient object
+        patient = Patient.objects.get(mobile_number=request.data['mobile_number'], verification_sms_code=request.data['verification_sms_code'])
+
+        if patient:
+            # Update the user's password
+            patient.user.password = make_password(request.data['password'])
+            patient.user.save()
+            return Response({"message": "Password has been changed successfully."})
+        else:
+            return Response({"message": "Wrong mobile number or verification code."})
+
+    except Patient.DoesNotExist:
+        # If no patient object exists for the user, return an error response
+        return Response({'message': 'No patient data found for this user'}, status=404)
 
 
 
@@ -82,28 +151,6 @@ def login(request):
     return Response({'token': token.key, 'user': serializer.data})
 
 
-
-
-@api_view(['GET'])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def getInfo(request):
-    # Retrieve the current user
-    user = request.user
-    
-    # Assuming a OneToOneField relation between User and Patient
-    try:
-        # Retrieve the associated patient object
-        patient = Patient.objects.get(user=user)
-        
-        # Serialize the patient data
-        serializer = PatientSerializer(patient)
-        
-        # Return the serialized patient data
-        return Response(serializer.data)
-    except Patient.DoesNotExist:
-        # If no patient object exists for the user, return an error response
-        return Response({'error': 'No patient data found for this user'}, status=404)
 
 
 
@@ -137,8 +184,30 @@ def sendSmsVerification(request):
         # If no patient object exists for the user, return an error response
         return Response({'error': 'No patient data found for this user'}, status=404)
 
+  
 
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def getInfo(request):
+    # Retrieve the current user
+    user = request.user
+    
+    # Assuming a OneToOneField relation between User and Patient
+    try:
+        # Retrieve the associated patient object
+        patient = Patient.objects.get(user=user)
         
+        # Serialize the patient data
+        serializer = PatientSerializer(patient)
+        
+        # Return the serialized patient data
+        return Response(serializer.data)
+    except Patient.DoesNotExist:
+        return Response({'error': 'No patient data found for this user'}, status=404)
+
+        # If no patient object exists for the user, return an error response
+   
 
 
 
@@ -229,9 +298,6 @@ def submitEmailVerification(request):
     return Response("Not verified ", status=status.HTTP_404_NOT_FOUND)
 
  
-
-
-
 
 
 

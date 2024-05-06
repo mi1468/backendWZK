@@ -11,6 +11,8 @@ class Questions(models.Model):
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
     title = models.CharField(max_length=200, blank=True, null=True)
     question_text = models.CharField(max_length=255, null=False)
+    AnswerId = models.CharField(max_length=255, null=True)
+    QuestionId = models.CharField(max_length=255, null=True)
      
     prerequisite = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     order = models.IntegerField()
